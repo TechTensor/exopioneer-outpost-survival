@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d20">
+  <title>ExoPioneer | Outpost Survival Simulator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="stars"></div>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="EXOPIONEER home"><span class="brand-mark">✦</span> EXOPIONEER <span class="brand-sub">MISSION CONTROL</span></a>
+    <div class="top-actions"><span class="live-dot"></span><span>SIMULATION ONLINE</span><button id="soundToggle" class="icon-btn" title="Toggle sound effects" aria-label="Toggle sound">♫</button></div>
+  </header>
+
+  <main>
+    <section id="startScreen" class="screen start-screen">
+      <div class="hero-copy">
+        <div class="eyebrow">NASA SPACE APPS CHALLENGE • 2026</div>
+        <h1>One outpost.<br><span>Thirty days</span> to survive.</h1>
+        <p class="hero-text">Lead a crew on another world. Keep the habitat alive by balancing life support, power, food production and radiation protection. Every decision has a cost.</p>
+        <div class="hero-points"><span>✦ Resource strategy</span><span>✦ Real science concepts</span><span>✦ Dynamic mission events</span></div>
+      </div>
+      <div class="launch-card">
+        <div class="card-kicker">NEW MISSION</div>
+        <h2>Choose your destination</h2>
+        <p class="muted">Each world brings a different operational challenge.</p>
+        <button class="planet-choice selected" data-planet="moon">
+          <span class="planet-icon moon-icon">◐</span><span class="planet-info"><b>LUNAR OUTPOST</b><small>Moon · 1/6 Earth's gravity · Long nights</small></span><span class="choice-check">✓</span>
+        </button>
+        <button class="planet-choice" data-planet="mars">
+          <span class="planet-icon mars-icon">◉</span><span class="planet-info"><b>MARS HABITAT</b><small>Mars · Thin atmosphere · Dust storms</small></span><span class="choice-check">✓</span>
+        </button>
+        <label class="name-label" for="commanderName">COMMANDER NAME</label>
+        <input id="commanderName" maxlength="22" placeholder="Enter your name" value="Commander">
+        <button id="launchBtn" class="primary-btn">INITIALIZE MISSION <span>→</span></button>
+        <div class="small-note">Training simulation · Simplified educational model</div>
+      </div>
+    </section>
+
+    <section id="gameScreen" class="screen game-screen hidden">
+      <div class="mission-heading">
+        <div><div class="eyebrow">MISSION CONTROL / <span id="planetLabel">LUNAR OUTPOST</span></div><h1 id="welcomeTitle">Welcome, Commander.</h1><p id="missionSub" class="muted">Your crew is ready. Keep the habitat operational.</p></div>
+        <div class="day-box"><span>MISSION DAY</span><strong><b id="dayNumber">01</b><small> / 30</small></strong><div class="progress-track"><i id="dayProgress"></i></div></div>
+      </div>
+
+      <div class="status-strip"><span><i class="live-dot"></i> HABITAT STATUS: <b id="statusText">STABLE</b></span><span>CREW <b>04</b></span><span>MISSION OBJECTIVE <b>SURVIVE 30 DAYS</b></span></div>
+
+      <div class="dashboard-grid">
+        <section class="panel resources-panel">
+          <div class="panel-head"><div><div class="eyebrow">LIFE SUPPORT SYSTEMS</div><h2>Outpost resources</h2></div><span class="unit-note">SYSTEM CAPACITY</span></div>
+          <div id="resourceList" class="resource-list"></div>
+          <div class="resource-foot">Resource levels are simulated estimates, not real spacecraft operating limits.</div>
+        </section>
+
+        <section class="panel actions-panel">
+          <div class="panel-head"><div><div class="eyebrow">MISSION PLANNING</div><h2>Choose today's action</h2></div><span class="day-tag" id="actionDay">DAY 01</span></div>
+          <p class="muted action-intro">Select one major operation. It will consume time, power or supplies, but may improve your chance of survival.</p>
+          <div id="actionList" class="action-list">
+            <button class="action-card" data-action="solar"><span class="action-icon">☀</span><span><b>Deploy solar arrays</b><small>Generate additional energy</small></span><em>POWER</em></button>
+            <button class="action-card" data-action="farm"><span class="action-icon">♧</span><span><b>Expand food production</b><small>Improve the habitat greenhouse</small></span><em>FOOD</em></button>
+            <button class="action-card" data-action="shield"><span class="action-icon">⬡</span><span><b>Improve radiation shelter</b><small>Protect the crew during solar events</small></span><em>SAFETY</em></button>
+            <button class="action-card" data-action="recycle"><span class="action-icon">⟳</span><span><b>Service life-support recycling</b><small>Recover more water and oxygen</small></span><em>LIFE SUPPORT</em></button>
+            <button class="action-card" data-action="repair"><span class="action-icon">⚒</span><span><b>Repair habitat systems</b><small>Restore system integrity</small></span><em>MAINTENANCE</em></button>
+            <button class="action-card" data-action="research"><span class="action-icon">⌕</span><span><b>Run science experiment</b><small>Earn mission science points</small></span><em>SCIENCE</em></button>
+          </div>
+          <button id="nextDayBtn" class="primary-btn next-btn" disabled>SELECT AN ACTION TO CONTINUE <span>→</span></button>
+          <div id="selectedHint" class="selected-hint">One major action is available each mission day.</div>
+        </section>
+
+        <section class="panel log-panel">
+          <div class="panel-head"><div><div class="eyebrow">FLIGHT DIRECTOR'S CONSOLE</div><h2>Mission log</h2></div><span class="log-live">● LIVE</span></div>
+          <div id="eventBanner" class="event-banner"><span>✦</span><div><b>Mission started</b><small>Your crew has entered the habitat. Systems are nominal.</small></div></div>
+          <div id="logEntries" class="log-entries" aria-live="polite"></div>
+        </section>
+        <section class="panel objective-panel">
+          <div class="panel-head"><div><div class="eyebrow">MISSION BRIEF</div><h2>Survival objectives</h2></div></div>
+          <div class="objective-row"><span class="objective-icon">♡</span><div><b>Keep the crew alive</b><small>Maintain critical resources above zero.</small></div><span class="objective-state">ACTIVE</span></div>
+          <div class="objective-row"><span class="objective-icon">◈</span><div><b>Protect from radiation</b><small>Build shielding before solar events.</small></div><span class="objective-state">ACTIVE</span></div>
+          <div class="objective-row"><span class="objective-icon">◎</span><div><b>Complete 30 mission days</b><small>Survive until the return window.</small></div><span class="objective-state">0 / 30</span></div>
+          <div class="science-score"><span>SCIENCE POINTS</span><strong id="scienceScore">0</strong></div>
+        </section>
+      </div>
+      <div class="bottom-actions"><button id="restartBtn" class="text-btn">↻ Restart mission</button><span>EXOPIONEER SIMULATOR · EDUCATIONAL PROTOTYPE</span><button id="rulesBtn" class="text-btn">How to play ?</button></div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-card"><div id="modalIcon" class="modal-icon">✦</div><div class="eyebrow">MISSION REPORT</div><h2 id="modalTitle">Mission complete</h2><p id="modalText"></p><div class="report-stats" id="reportStats"></div><button id="modalButton" class="primary-btn">RETURN TO MISSION CONTROL →</button></div>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
